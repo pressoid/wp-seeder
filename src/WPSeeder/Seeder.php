@@ -14,11 +14,8 @@ class Seeder implements SeederInterface
         $this->factory = $factory;
     }
 
-    public function run($seeds)
+    public function run()
     {
-    	var_dump(realpath('./'));
-    	require realpath($seeds) . PHP_EOL;
-
     	$this->defineFactories();
     	$this->generateSeeds();
     }

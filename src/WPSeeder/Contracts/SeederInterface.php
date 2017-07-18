@@ -4,5 +4,5 @@ namespace WPSeeder\Contracts;
 
 interface SeederInterface
 {
-	public function run($schema);
+	public function run();
 }

@@ -2,6 +2,7 @@
 
 namespace WPSeeder;
 
+use Exception;
 use WPSeeder\Contracts\SeederInterface;
 
 class Command
@@ -12,6 +13,15 @@ class Command
 	 * @var \WPSeeder\Contracts\SeederInterface
 	 */
 	protected $seeder;
+
+    /**
+     * Command options with default values.
+     *
+     * @var array
+     */
+    protected $options = [
+        'factories' => [],
+    ];
 
 	/**
 	 * Construct command.
@@ -28,23 +38,106 @@ class Command
      *
      * ## OPTIONS
      *
-     * [--config=<path>]
-     * : Path to configuration file which has to be used as seeding schema.
+     * [--factories=<names>]
+     * : Run seeding with additional standard factories. Available factories: posts, users.
      *
      * ## EXAMPLES
      *
-     *     wp seed --config="path/to/seeds.php"
+     *     wp seed --factories="posts:10,users:5"
      *
      * @when after_wp_load
      */
     public function __invoke($arguments, $options)
     {
-    	if (isset($options['config'])) {
-    		$this->seeder->run($options['config']);
+        $this->setOptions($options);
 
-       		return \WP_CLI::success('Seeded!');
-    	}
+        try {
 
-    	return \WP_CLI::error('You have to provide path to the seeds configuration with [--config=<path>] option.');
+            // We will register buildin factories
+            // specifed by user and run seeding.
+            $this->defineFactories();
+            $this->seeder->run();
+
+        } catch (Exception $e) {
+
+            // Provide feedback to the user
+            // when something went wrong.
+            return \WP_CLI::error($e->getMessage());
+
+        }
+
+        return \WP_CLI::success('Seeded.');
+    }
+
+    /**
+     * Defines factories specifed in factories option with buildin templates.
+     *
+     * @return void
+     */
+    public function defineFactories()
+    {
+        foreach ($this->getFactories() as $definition) {
+            foreach ($definition as $name => $count) {
+                if (file_exists($factory = dirname(__DIR__) . "/../factories/{$name}.php")) {
+                    include $factory;
+                } else {
+                    throw new Exception("There is no factory definition for [{$name}] factory.");
+                }
+            }
+        }
+    }
+
+    /**
+     * Parses factories option and returns factory name and number of items to generate.
+     *
+     * @return array
+     */
+    public function getFactories()
+    {
+        if (! empty($factories = $this->getOption('factories'))) {
+            $factories = explode(',', $factories);
+
+            return array_map(function ($factory) {
+                $definition = explode(':', $factory);
+
+                return [$definition[0] => intval($definition[1])];
+            }, $factories);
+        }
+
+        return $factories;
+    }
+
+    /**
+     * Gets value of `options` property.
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Sets value of the `options` property.
+     *
+     * @param array $options
+     * @return self
+     */
+    public function setOptions(array $options)
+    {
+        $this->options = array_merge($this->options, $options);
+
+        return $this;
+    }
+
+    /**
+     * Gets value of the specifed option.
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function getOption($name)
+    {
+        return $this->options[$name];
     }
 }

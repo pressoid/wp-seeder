@@ -1,6 +1,6 @@
 <?php
 
-add_action('wpseeder/define/factory/user', function (WPSeeder\Factory $factory) {
+add_action('wp_seeder/define/factory/user', function (WPSeeder\Factory $factory) {
 	$factory->define('users', function (Faker\Generator $faker) {
 		return [
 			'display_name' => $faker->name(),
@@ -11,6 +11,6 @@ add_action('wpseeder/define/factory/user', function (WPSeeder\Factory $factory) 
 	});
 });
 
-add_action('wpseeder/generate/seeds', function (WPSeeder\Factory $factory) use ($count) {
+add_action('wp_seeder/generate/seeds', function (WPSeeder\Factory $factory) use ($count) {
 	$factory->create('users', $count);
 });

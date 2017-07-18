@@ -22,18 +22,18 @@ class Seeder implements SeederInterface
 
     public function domains()
     {
-    	return apply_filters('wpseeder/define/factory/domains', $this->domains);
+    	return apply_filters('wp_seeder/define/factory/domains', $this->domains);
     }
 
     protected function defineFactories()
     {
     	foreach ($this->domains() as $domain) {
-    		do_action("wpseeder/define/factory/{$domain}", $this->factory->domain($domain));
+    		do_action("wp_seeder/define/factory/{$domain}", $this->factory->domain($domain));
     	}
     }
 
     protected function generateSeeds()
     {
-    	do_action("wpseeder/generate/seeds", $this->factory);
+    	do_action("wp_seeder/generate/seeds", $this->factory);
     }
 }

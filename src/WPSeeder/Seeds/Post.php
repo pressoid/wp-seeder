@@ -14,7 +14,7 @@ class Post extends Seed
 
 		if (isset($this->properties['post_meta']) && is_array($this->properties['post_meta'])) {
 			foreach ($this->properties['post_meta'] as $key => $value) {
-				add_post_meta($post->ID, $key, $value);
+				add_post_meta($post, $key, $value);
 			}
 		}
 

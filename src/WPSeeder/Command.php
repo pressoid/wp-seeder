@@ -39,7 +39,7 @@ class Command
      * ## OPTIONS
      *
      * [--factories=<names>]
-     * : Run seeding with additional standard factories. Available factories: posts, users.
+     * : Run seeding with additional factories definitions for standard WordPress objects. Available factories: posts, users.
      *
      * ## EXAMPLES
      *

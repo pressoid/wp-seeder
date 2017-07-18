@@ -4,13 +4,13 @@ if (! defined('WPINC')) {
 	die();
 }
 
-if (! defined('WPSEEDER_ACTIVE')) {
-	define('WPSEEDER_ACTIVE', WP_DEBUG);
-	define('WPSEEDER_LOCALE', 'en_US');
+if (! defined('WP_SEEDER_ACTIVE')) {
+	define('WP_SEEDER_ACTIVE', WP_DEBUG);
+	define('WP_SEEDER_LOCALE', 'en_US');
 }
 
-if (constant('WPSEEDER_ACTIVE')) {
-	$faker = Faker\Factory::create(constant('WPSEEDER_LOCALE'));
+if (constant('WP_SEEDER_ACTIVE')) {
+	$faker = Faker\Factory::create(constant('WP_SEEDER_LOCALE'));
 
 	$factory = new WPSeeder\Factory($faker);
 	$seeder = new WPSeeder\Seeder($factory);

@@ -19,14 +19,14 @@ class Factory
      *
      * @var string
      */
-	public $domain;
+    public $domain;
 
     /**
      * Collection of seeds definitions for factory.
      *
      * @var array
      */
-	public $definitions = [];
+    public $definitions = [];
 
 
     /**
@@ -34,7 +34,7 @@ class Factory
      *
      * @param \Faker\Generator $faker
      */
-	public function __construct(Generator $faker)
+    public function __construct(Generator $faker)
     {
         $this->faker = $faker;
     }
@@ -61,9 +61,9 @@ class Factory
      */
     public function define($name, Closure $definition)
     {
-    	$this->definitions[$this->domain][$name] = $definition;
+        $this->definitions[$this->domain][$name] = $definition;
 
-    	return $this;
+        return $this;
     }
 
     /**
@@ -75,13 +75,13 @@ class Factory
      */
     public function create($name, $number)
     {
-    	$definition = $this->definition($name);
+        $definition = $this->definition($name);
 
-    	for ($i=0; $i < $number; $i++) {
+        for ($i=0; $i < $number; $i++) {
             $properties = $definition($this->domain, $this->faker);
 
-    		$this->seed()->properties($properties)->generate();
-    	}
+            $this->seed()->properties($properties)->generate();
+        }
     }
 
     /**
@@ -93,7 +93,7 @@ class Factory
      */
     public function definition($domain, $name)
     {
-    	return $this->definitions[$domain][$name];
+        return $this->definitions[$domain][$name];
     }
 
     /**

@@ -7,12 +7,12 @@ use WPSeeder\Contracts\SeederInterface;
 
 class Command
 {
-	/**
-	 * Seeder instance.
-	 *
-	 * @var \WPSeeder\Contracts\SeederInterface
-	 */
-	protected $seeder;
+    /**
+     * Seeder instance.
+     *
+     * @var \WPSeeder\Contracts\SeederInterface
+     */
+    protected $seeder;
 
     /**
      * Command options with default values.
@@ -23,17 +23,17 @@ class Command
         'factories' => [],
     ];
 
-	/**
-	 * Construct command.
-	 *
-	 * @param \WPSeeder\Contracts\SeederInterface $seeder
-	 */
-	public function __construct(SeederInterface $seeder)
-	{
-		$this->seeder = $seeder;
-	}
+    /**
+     * Construct command.
+     *
+     * @param \WPSeeder\Contracts\SeederInterface $seeder
+     */
+    public function __construct(SeederInterface $seeder)
+    {
+        $this->seeder = $seeder;
+    }
 
-	/**
+    /**
      * Seeds a database with fake content using configured seeding schema.
      *
      * ## OPTIONS

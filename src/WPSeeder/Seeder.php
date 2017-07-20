@@ -19,7 +19,7 @@ class Seeder implements SeederInterface
      *
      * @var array
      */
-	protected $domains = ['user', 'post'];
+    protected $domains = ['user', 'post'];
 
     /**
      * Construct seeder.
@@ -38,9 +38,9 @@ class Seeder implements SeederInterface
      */
     public function run()
     {
-    	$this->defineFactories();
+        $this->defineFactories();
 
-    	$this->generateSeeds();
+        $this->generateSeeds();
     }
 
     /**
@@ -50,7 +50,7 @@ class Seeder implements SeederInterface
      */
     protected function domains()
     {
-    	return apply_filters('wp_seeder/define/factory/domains', $this->domains);
+        return apply_filters('wp_seeder/define/factory/domains', $this->domains);
     }
 
     /**
@@ -60,9 +60,9 @@ class Seeder implements SeederInterface
      */
     protected function defineFactories()
     {
-    	foreach ($this->domains() as $domain) {
-    		do_action("wp_seeder/define/factory/{$domain}", $this->factory->domain($domain));
-    	}
+        foreach ($this->domains() as $domain) {
+            do_action("wp_seeder/define/factory/{$domain}", $this->factory->domain($domain));
+        }
     }
 
     /**
@@ -72,6 +72,6 @@ class Seeder implements SeederInterface
      */
     protected function generateSeeds()
     {
-    	do_action("wp_seeder/generate/seeds", $this->factory);
+        do_action("wp_seeder/generate/seeds", $this->factory);
     }
 }

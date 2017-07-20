@@ -4,21 +4,45 @@ namespace WPSeeder;
 
 use Closure;
 use Faker\Generator;
-use WPSeeder\Seeds\Post;
 
 class Factory
 {
-	public $domain;
-	public $definitions;
+    /**
+     * Seeds namespace.
+     *
+     * @var string
+     */
+    const SEEDS_NAMESPACE = 'WPSeeder\Seeds';
 
+    /**
+     * Domain name in which factory hast to operate.
+     *
+     * @var string
+     */
+	public $domain;
+
+    /**
+     * Collection of seeds definitions for factory.
+     *
+     * @var array
+     */
+	public $definitions = [];
+
+
+    /**
+     * Construct factory.
+     *
+     * @param \Faker\Generator $faker
+     */
 	public function __construct(Generator $faker)
     {
         $this->faker = $faker;
     }
 
     /**
-     * @param mixed $domain
+     * Sets domain for factory.
      *
+     * @param string $domain
      * @return self
      */
     public function domain($domain)
@@ -28,6 +52,13 @@ class Factory
         return $this;
     }
 
+    /**
+     * Defines seed definition for factory.
+     *
+     * @param  string  $name
+     * @param  \Closure $definition
+     * @return self
+     */
     public function define($name, Closure $definition)
     {
     	$this->definitions[$this->domain][$name] = $definition;
@@ -35,31 +66,45 @@ class Factory
     	return $this;
     }
 
+    /**
+     * Generates specifed number of seeds based on definitions and domain.
+     *
+     * @param  string $name
+     * @param  integer $number
+     * @return void
+     */
     public function create($name, $number)
     {
     	$definition = $this->definition($name);
 
     	for ($i=0; $i < $number; $i++) {
-    		$this->{$this->domain}($definition($this->faker));
+            $properties = $definition($this->domain, $this->faker);
+
+    		$this->seed()->properties($properties)->generate();
     	}
     }
 
-    public function definition($name)
+    /**
+     * Gets definition for sepcifed domain and definition name.
+     *
+     * @param  string $domain
+     * @param  string $name
+     * @return \Closure
+     */
+    public function definition($domain, $name)
     {
-    	return $this->definitions[$this->domain][$name];
+    	return $this->definitions[$domain][$name];
     }
 
-    public function post(array $properties)
+    /**
+     * Initializes seed model.
+     *
+     * @return \WPSeeder\Contracts\SeedInterface
+     */
+    public function seed()
     {
-    	$post = new Post($this->faker);
+        $seed = static::SEEDS_NAMESPACE . "\\" . ucfirst($this->domain);
 
-    	return $post->properties($properties)->create();
-    }
-
-    public function user(array $properties)
-    {
-    	$user = new User($this->faker);
-
-    	return $user->properties($properties)->create();
+        return new $seed($this->faker);
     }
 }

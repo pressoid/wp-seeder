@@ -8,7 +8,37 @@ class Post extends Seed
 {
 	use CurrentDate;
 
-	public function create()
+	/**
+	 * Gets default values of post seed properties.
+	 *
+	 * @return array
+	 */
+	public function defaults()
+	{
+		$title = $this->faker->sentence();
+		$slug = sanitize_title($title);
+
+		return [
+			'post_author' => 1,
+			'post_type' => 'post',
+			'post_status' => 'publish',
+			'post_name' => $slug,
+			'post_title' => $title,
+			'post_date' => $this->now(),
+			'post_date_gmt' => $this->now(),
+			'post_modified' => $this->now(),
+			'post_modified_gmt' => $this->now(),
+			'post_content' => $this->faker->text(),
+			'post_excerpt' => $this->faker->sentence(12),
+		];
+	}
+
+	/**
+	 * Generates entry of post seed.
+	 *
+	 * @return void
+	 */
+	public function generate()
 	{
 		$post = wp_insert_post(array_merge($this->defaults(), $this->properties));
 
@@ -19,27 +49,5 @@ class Post extends Seed
 		}
 
 		return $post;
-	}
-
-	public function defaults()
-	{
-		$title = $this->faker->sentence();
-
-		return [
-			'post_author' => 1,
-			'post_type' => 'post',
-			'post_status' => 'publish',
-
-			'post_date' => $this->now(),
-			'post_date_gmt' => $this->now(),
-			'post_modified' => $this->now(),
-			'post_modified_gmt' => $this->now(),
-
-			'post_title' => $title,
-			'post_name' => sanitize_title($title),
-
-			'post_content' => $this->faker->text(),
-			'post_excerpt' => $this->faker->sentence(12),
-		];
 	}
 }

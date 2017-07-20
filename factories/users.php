@@ -12,5 +12,5 @@ add_action('wp_seeder/define/factory/user', function (WPSeeder\Factory $factory)
 });
 
 add_action('wp_seeder/generate/seeds', function (WPSeeder\Factory $factory) use ($count) {
-	$factory->create('users', $count);
+	$factory->generate('users', $count);
 });

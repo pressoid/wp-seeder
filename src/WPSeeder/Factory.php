@@ -15,19 +15,11 @@ class Factory
     const SEEDS_NAMESPACE = 'WPSeeder\Seeds';
 
     /**
-     * Domain name in which factory hast to operate.
-     *
-     * @var string
-     */
-    public $domain;
-
-    /**
      * Collection of seeds definitions for factory.
      *
      * @var array
      */
     public $definitions = [];
-
 
     /**
      * Construct factory.
@@ -40,34 +32,21 @@ class Factory
     }
 
     /**
-     * Sets domain for factory.
-     *
-     * @param string $domain
-     * @return self
-     */
-    public function domain($domain)
-    {
-        $this->domain = $domain;
-
-        return $this;
-    }
-
-    /**
      * Defines seed definition for factory.
      *
      * @param  string  $name
-     * @param  \Closure $definition
+     * @param  \Closure $closure
      * @return self
      */
-    public function define($name, Closure $definition)
+    public function define($name, Closure $closure)
     {
-        $this->definitions[$this->domain][$name] = $definition;
+        $this->definitions[$name] = new Definition($this->domain(), $closure);
 
         return $this;
     }
 
     /**
-     * Generates specifed number of seeds based on definitions and domain.
+     * Generates specifed number of seeds based on definitions and model.
      *
      * @param  string $name
      * @param  integer $number
@@ -78,32 +57,44 @@ class Factory
         $definition = $this->definition($name);
 
         for ($i=0; $i < $number; $i++) {
-            $properties = $definition($this->domain, $this->faker);
+            $properties = $definition->resolve($this->faker);
 
-            $this->seed()->properties($properties)->generate();
+            $this->seed($definition->domain)->properties($properties)->generate();
         }
     }
 
     /**
-     * Gets definition for sepcifed domain and definition name.
+     * Gets definition for sepcifed model and definition name.
      *
-     * @param  string $domain
      * @param  string $name
      * @return \Closure
      */
-    public function definition($domain, $name)
+    public function definition($name)
     {
-        return $this->definitions[$domain][$name];
+        return $this->definitions[$name];
+    }
+
+    /**
+     * Gets name of currently active domain.
+     *
+     * @return string
+     */
+    public function domain()
+    {
+        $name = explode('/', current_filter());
+
+        return end($name);
     }
 
     /**
      * Initializes seed model.
      *
+     * @param  string $model
      * @return \WPSeeder\Contracts\SeedInterface
      */
-    public function seed()
+    public function seed($model)
     {
-        $seed = static::SEEDS_NAMESPACE . "\\" . ucfirst($this->domain);
+        $seed = static::SEEDS_NAMESPACE . "\\" . ucfirst($model);
 
         return new $seed($this->faker);
     }

@@ -19,7 +19,7 @@ class Seeder implements SeederInterface
      *
      * @var array
      */
-    protected $domains = ['user', 'post'];
+    protected $domains = ['post', 'user'];
 
     /**
      * Construct seeder.
@@ -38,9 +38,13 @@ class Seeder implements SeederInterface
      */
     public function run()
     {
+        do_action('wp_seeder/before/run');
+
         $this->defineFactories();
 
         $this->generateSeeds();
+
+        do_action('wp_seeder/after/run');
     }
 
     /**
@@ -61,7 +65,7 @@ class Seeder implements SeederInterface
     protected function defineFactories()
     {
         foreach ($this->domains() as $domain) {
-            do_action("wp_seeder/define/factory/{$domain}", $this->factory->domain($domain));
+            do_action("wp_seeder/define/factory/{$domain}", $this->factory);
         }
     }
 

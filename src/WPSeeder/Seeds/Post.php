@@ -28,8 +28,8 @@ class Post extends Seed
             'post_date_gmt' => $this->now(),
             'post_modified' => $this->now(),
             'post_modified_gmt' => $this->now(),
-            'post_content' => $this->faker->text(),
-            'post_excerpt' => $this->faker->sentence(12),
+            'post_content' => $this->faker->realText(2000),
+            'post_excerpt' => $this->faker->realText(200),
         ];
     }
 

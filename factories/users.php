@@ -14,3 +14,11 @@ add_action('wp_seeder/define/factory/user', function (WPSeeder\Factory $factory)
 add_action('wp_seeder/generate/seeds', function (WPSeeder\Factory $factory) use ($count) {
     $factory->create('users', $count);
 });
+
+add_action('wp_seeder/before/run', function () {
+    $users = get_users(['exclude' => 1]);
+
+    foreach ($users as $user) {
+        wp_delete_user($user->ID, 1);
+    }
+});

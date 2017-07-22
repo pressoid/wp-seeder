@@ -2,6 +2,7 @@
 
 namespace WPSeeder;
 
+use WP_CLI;
 use Exception;
 use WPSeeder\Contracts\SeederInterface;
 
@@ -41,6 +42,9 @@ class Command
      * [--factories=<names>]
      * : Run seeding with additional factories definitions for standard WordPress objects. Available factories: posts, users.
      *
+     * [--yes]
+     * : Answer yes to the confirmation message.
+     *
      * ## EXAMPLES
      *
      *     wp seed --factories="posts:10,users:5"
@@ -53,8 +57,10 @@ class Command
 
         try {
 
-            // We will register buildin factories
-            // specifed by user and run seeding.
+            // When user agreed for seeding we will register buildin
+            // factories specifed by user and run seeder itself.
+            WP_CLI::confirm("Are you sure you want to seed the database?", $options);
+
             $this->defineFactories();
             $this->seeder->run();
 
@@ -62,11 +68,11 @@ class Command
 
             // Provide feedback to the user
             // when something went wrong.
-            return \WP_CLI::error($e->getMessage());
+            return WP_CLI::error($e->getMessage());
 
         }
 
-        return \WP_CLI::success('Seeded.');
+        return WP_CLI::success('Seeded.');
     }
 
     /**

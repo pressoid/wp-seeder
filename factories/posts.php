@@ -11,7 +11,10 @@ add_action('wp_seeder/generate/seeds', function (WPSeeder\Factory $factory) use 
 });
 
 add_action('wp_seeder/before/run', function () {
-    $posts = get_posts(['posts_per_page' => -1]);
+    $posts = get_posts([
+        'post_type' => 'post',
+        'posts_per_page' => -1,
+    ]);
 
     foreach ($posts as $post) {
         wp_delete_post($post->ID, true);

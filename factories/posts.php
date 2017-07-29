@@ -20,3 +20,16 @@ add_action('wp_seeder/before/run', function () {
         wp_delete_post($post->ID, true);
     }
 });
+
+add_action('before_delete_post', function ($id) {
+    $media = get_children([
+        'post_parent' => $id,
+        'post_type'   => 'attachment'
+    ]);
+
+    if(! empty($media)) {
+        foreach($media as $file) {
+            wp_delete_attachment($file->ID);
+        }
+    }
+});

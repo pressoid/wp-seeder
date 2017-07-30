@@ -78,4 +78,14 @@ class Seeder implements SeederInterface
     {
         do_action("wp_seeder/generate/seeds", $this->factory);
     }
+
+    /**
+     * Gets value of domains.
+     *
+     * @return array
+     */
+    public function getDomains()
+    {
+        return $this->domains;
+    }
 }

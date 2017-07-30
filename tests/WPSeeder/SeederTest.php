@@ -9,7 +9,7 @@ class SeederTest extends TestCase
     /**
      * @test
      */
-    public function test_seeder_running()
+    public function test_running_a_seeder()
     {
         $factory = $this->getFactory();
         $seeder = $this->getSeeder($factory);

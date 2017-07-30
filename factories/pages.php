@@ -1,44 +1,44 @@
 <?php
 
 /**
- * Make factory `posts` definition for seeding
- * entries of the `post` post type.
+ * Make factory `pages` definition for seeding
+ * entries of the `page` post type.
  */
 add_action('wp_seeder/define/factory/post', function (WPSeeder\Factory $factory) {
-    $factory->define('posts', function (Faker\Generator $faker) {
-        return ['post_type' => 'post'];
+    $factory->define('pages', function (Faker\Generator $faker) {
+        return ['post_type' => 'page'];
     });
 });
 
 /**
  * Generate specified $count number
- * seeds of `posts` definition.
+ * seeds of `pages` definition.
  */
 add_action('wp_seeder/generate/seeds', function (WPSeeder\Factory $factory) use ($count) {
-    $factory->create('posts', $count);
+    $factory->create('pages', $count);
 });
 
 /**
  * Before running seeding, we will delete all
- * current entries of `post` post type.
+ * current entries of `page` post type.
  */
 add_action('wp_seeder/before/run', function () {
-    $posts = get_posts([
-        'post_type' => 'post',
+    $pages = get_posts([
+        'post_type' => 'page',
         'posts_per_page' => -1,
     ]);
 
-    foreach ($posts as $post) {
-        wp_delete_post($post->ID, true);
+    foreach ($pages as $page) {
+        wp_delete_post($page->ID, true);
     }
 });
 
 /**
  * We also have to delete attachments of every
- * `post` entry which will be deleted.
+ * `page` entry which will be deleted.
  */
 add_action('before_delete_post', function ($id) {
-    if (get_post_type($id) === 'post') {
+    if (get_post_type($id) === 'page') {
         $media = get_children([
             'post_parent' => $id,
             'post_type'   => 'attachment'

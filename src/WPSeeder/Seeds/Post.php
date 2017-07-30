@@ -32,7 +32,7 @@ class Post extends Seed
             'post_content' => $this->faker->realText(2000),
             'post_excerpt' => $this->faker->realText(200),
             'post_thumbnail' => [
-                'url' => 'https://unsplash.it/g/1140/768/?random',
+                'url' => 'https://unsplash.it/1140/768/?random',
                 'name' => str_replace('.', '', $this->faker->sentence()),
             ]
         ];

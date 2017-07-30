@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Make factory `users` definition for
+ * seeding entries of the `user`.
+ */
 add_action('wp_seeder/define/factory/user', function (WPSeeder\Factory $factory) {
     $factory->define('users', function (Faker\Generator $faker) {
         return [
@@ -11,10 +15,18 @@ add_action('wp_seeder/define/factory/user', function (WPSeeder\Factory $factory)
     });
 });
 
+/**
+ * Generate specified $count number
+ * seeds of `users` definition.
+ */
 add_action('wp_seeder/generate/seeds', function (WPSeeder\Factory $factory) use ($count) {
     $factory->create('users', $count);
 });
 
+/**
+ * Before running seeding, we will delete
+ * all current entries of `user`.
+ */
 add_action('wp_seeder/before/run', function () {
     $users = get_users(['exclude' => 1]);
 

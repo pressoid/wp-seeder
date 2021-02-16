@@ -1,7 +1,7 @@
 {
-  "name": "jedrzejchalubek/wp-seeder",
-  "description": "Seeds your WordPress database with test data.",
-  "keywords": ["seed", "seeding", "wordpress"],
+  "name": "pressoid/wp-seeder",
+  "description": "A library for seeding your WordPress database with dummy data",
+  "keywords": ["seed", "seeding", "database", "wordpress"],
   "type": "library",
   "license": "MIT",
   "authors": [
@@ -13,20 +13,35 @@
   ],
   "minimum-stability": "stable",
   "require": {
-    "php": ">=5.6",
-    "fzaninotto/faker": "~1.6.0"
+    "php": ">=7.1",
+    "fakerphp/faker": "^1.13.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "~5.7",
-    "brain/monkey": "~2.0",
-    "satooshi/php-coveralls": "^1.0.0"
+    "phpunit/phpunit": "^9.5.2",
+    "brain/monkey": "^2.6.0",
+    "squizlabs/php_codesniffer": "^3.3.1",
+		"wp-coding-standards/wpcs": "^2.3.0"
   },
   "autoload": {
     "psr-4": {
-      "WPSeeder\\": "src"
+      "WP_Seeder\\": "src/WP_Seeder"
     }
   },
   "config": {
     "optimize-autoloader": true
-  }
+  },
+  "scripts": {
+		"post-update-cmd": [
+			"phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs"
+		],
+    "test": [
+      "phpunit tests"
+    ],
+		"lint": [
+			"phpcs --standard=.phpcs.xml ./"
+		],
+		"format": [
+			"phpcbf --standard=.phpcs.xml ./"
+		]
+	}
 }

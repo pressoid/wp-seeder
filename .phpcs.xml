@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<ruleset name="WP Seeder" namespace="WP_Seeder\Core">
+  <arg name="extensions" value="php" />
+
+  <exclude-pattern>*/vendor/*</exclude-pattern>
+
+  <config name="installed_paths" value="vendor/wp-coding-standards/wpcs" />
+
+  <rule ref="WordPress-Extra" />
+  <rule ref="WordPress.Files.FileName">
+    <properties>
+      <property name="strict_class_file_names" value="false"/>
+    </properties>
+    <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+  </rule>
+</ruleset>
